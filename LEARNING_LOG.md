@@ -10,11 +10,7 @@ I started with a 4096-byte page and learned how the page can be divided into dif
 - Free space
 - Record data
 
-I learned how `struct` can be used to convert integers into bytes and store metadata directly inside the page.
-
-### What I implemented
-
-I implemented a `Page` class that can:
+Implemented a `Page` class that can:
 
 - Create a 4096-byte page using `bytearray`
 - Store the number of slots in the page header
@@ -26,3 +22,13 @@ I implemented a `Page` class that can:
 - Delete records by marking their slot as empty
 - Convert the page into raw bytes with `to_bytes()`
 - Reconstruct a `Page` object from raw bytes with `from_bytes()`
+
+
+Day 3
+Understood some struct sinatures deeply enough to do everything from scratch again, and built a schema aware encode and decode layer on top of Page and Table.
+
+Also reviewed my codes and found some bugs so fixed them as well. Implemented a tester for my Table. It was actually my first time implementing a tester so it was pretty interesting.
+Honestly a lot of progress from day 1~2, I spent like 6 hours on this so yea. 
+Either ways, tomorrow am planning to complete my storage engine.
+
+
