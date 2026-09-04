@@ -4,10 +4,11 @@ from Pages import Page, PageManager, PAGE_SIZE, SLOT_SIZE
 class Table:
     def __init__(self, page_manager):
         self.page_manager = page_manager
-        self.page_ids = []          
+        self.page_ids = [] 
+        #just a list of page_ids that have been allocated for this table. We will use this to find pages when we want to insert or retrieve records.         
     def insert_record(self, record_bytes):
         if self.page_ids:
-            last_page_id = self.page_ids[-1]
+            last_page_id = self.page_ids[-1] #-1 cause the last past id
             page = self.page_manager.read_page(last_page_id)
 
             if page.free_space() >= len(record_bytes) + SLOT_SIZE:
@@ -31,7 +32,16 @@ class Table:
         page.delete_record(slot_id)
         self.page_manager.write_page(page_id, page)
 
+    def update_record(self, page_id, slot_id, new_bytes):
+        page = self.page_manager.read_page(page_id)
+        page.update_record(slot_id, new_bytes)
+        self.page_manager.write_page(page_id, page)
 
+
+
+
+
+#only for testing purposes, lmao so dont mind it much
 if __name__ == "__main__":
     import os
 
@@ -62,7 +72,7 @@ if __name__ == "__main__":
         matches = (data == records[i])
         print(f"record {i}: location={locations[i]}  matches original: {matches}")
 
-    # --- verify delete works ---
+    #verifyin the delete shi as well
     print("\n--- Deleting record 3 and confirming it's gone ---")
     page_id, slot_id = locations[3]
     table.delete_record(page_id, slot_id)

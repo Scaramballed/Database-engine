@@ -37,6 +37,21 @@ class Page:
         offset, _ = struct.unpack_from(SLOT_FORMAT, self.buffer, self._slot_offset(slot_id))
         self._slot_offset(slot_id) #understand this again
         struct.pack_into(SLOT_FORMAT, self.buffer, self._slot_offset(slot_id), offset, 0)
+    def update_record(self, slot_id, new_bytes):
+        old_offset, old_length = struct.unpack_from(SLOT_FORMAT, self.buffer, self._slot_offset(slot_id))
+
+        if len(new_bytes) <= old_length:
+            # fits in the old space — overwrite in place, keep old_length in the slot
+            self.buffer[old_offset:old_offset + len(new_bytes)] = new_bytes
+            struct.pack_into(SLOT_FORMAT, self.buffer, self._slot_offset(slot_id), old_offset, len(new_bytes))
+        else:
+            # since it doesnt fit we just kinda point it to a new location in the free space, and update the slot to point to that new location. The old space is now wasted, but we can reclaim it later when we compact the page.
+            if self.free_space() < len(new_bytes):
+                raise ValueError("Page full")
+            self.free_space_offset -= len(new_bytes)
+            self.buffer[self.free_space_offset:self.free_space_offset + len(new_bytes)] = new_bytes
+            struct.pack_into(SLOT_FORMAT, self.buffer, self._slot_offset(slot_id), self.free_space_offset, len(new_bytes))
+            self._write_header()
     def to_bytes(self):
         return bytes(self.buffer)
     @classmethod
@@ -45,6 +60,7 @@ class Page:
         page.buffer = bytearray(data)
         page.num_slots, page.free_space_offset = struct.unpack_from(HEADER_FORMAT, page.buffer, 0)
         return page
+    
 
 #Manages reading and writing pages to a file
 class PageManager:
