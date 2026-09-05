@@ -1,4 +1,5 @@
 import struct
+from collections import OrderedDict
 PAGE_SIZE = 4096
 HEADER_FORMAT = "<HH"
 HEADER_SIZE = struct.calcsize(HEADER_FORMAT)
@@ -64,12 +65,14 @@ class Page:
 
 #Manages reading and writing pages to a file
 class PageManager:
-    def __init__(self, filename):
+    def __init__(self, filename, poolsize=64):
         try:
             self.file = open(filename, "r+b")
         except FileNotFoundError:
             open(filename, "wb").close() #written on one line without bothering to save it to a variable, since we never need to use it again after opening it.
             self.file = open(filename, "r+b")
+        self.cache = OrderedDict() # caching lesss gooo
+        self.poolsize = poolsize
     def allocate_page(self):
         self.file.seek(0, 2)
         file_size = self.file.tell()
@@ -78,13 +81,43 @@ class PageManager:
     def write_page(self, page_id, page):
         offset = page_id * PAGE_SIZE
         self.file.seek(offset)
-        self.file.write(page.to_bytes())   # page is a Page object passed in
+        self.file.write(page.to_bytes())
+
+        self.cache[page_id] = page # keep cache in sync with what's now on disk
+        self.cache.move_to_end(page_id)  
+        self._evict_if_needed()
 
     def read_page(self, page_id):
+        if page_id in self.cache:
+            self.cache.move_to_end(page_id)
+            return self.cache[page_id]
+        print(f"cache miss for page {page_id}, reading from disk")
         offset = page_id * PAGE_SIZE
         self.file.seek(offset)
         data = self.file.read(PAGE_SIZE)
-        return Page.from_bytes(data)
+        page = Page.from_bytes(data)
+
+        self.cache[page_id] = page   # js syncing it overall
+        self._evict_if_needed()
+        return page
+
+    def is_new(self):
+        self.file.seek(0, 2)
+        return self.file.tell() == 0
+
+    def write_raw(self, page_id, data: bytes):
+        offset = page_id * PAGE_SIZE
+        self.file.seek(offset)
+        self.file.write(data)
+
+    def read_raw(self, page_id):
+        offset = page_id * PAGE_SIZE
+        self.file.seek(offset)
+        return self.file.read(PAGE_SIZE)
 
     def close(self):
         self.file.close()
+
+    def _evict_if_needed(self):
+        if len(self.cache) > self.pool_size:
+            oldest_id, oldest_page = self.cache.popitem(last=False)
