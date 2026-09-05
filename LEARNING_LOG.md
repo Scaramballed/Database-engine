@@ -31,4 +31,14 @@ Also reviewed my codes and found some bugs so fixed them as well. Implemented a 
 Honestly a lot of progress from day 1~2, I spent like 6 hours on this so yea. 
 Either ways, tomorrow am planning to complete my storage engine.
 
+Day 4
+Understood some struct sinatures deeply enough to do everything from scratch again, and built a schema aware encode and decode layer on top of Page and Table.
+
+Also reviewed my codes and found some bugs so fixed them as well. Implemented a tester for my Table. It was actually my first time implementing a tester so it was pretty interesting.
+
+In the day 4 thought, could implement everything that I have done till now from scratch, and then I moved to basic caching without LRU, then after understanding and implementing that did the LRU part as well.
+
+And finally at the end I will try understanding B trees for the indexing. This will probably take a long time so for few days I will probably be only focused on the conceptes.
+I did say I would finish the storage engine yesterday lmao, but yea I did underestimate the B-tree a lot ig.
+
 
