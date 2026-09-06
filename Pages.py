@@ -72,7 +72,7 @@ class PageManager:
             open(filename, "wb").close() #written on one line without bothering to save it to a variable, since we never need to use it again after opening it.
             self.file = open(filename, "r+b")
         self.cache = OrderedDict() # caching lesss gooo
-        self.poolsize = poolsize
+        self.pool_size = poolsize
     def allocate_page(self):
         self.file.seek(0, 2)
         file_size = self.file.tell()
@@ -103,7 +103,7 @@ class PageManager:
 
     def is_new(self):
         self.file.seek(0, 2)
-        return self.file.tell() == 0
+        return self.file.tell() == 0 ##dont we have to allocate its page, might be a bug check it out later
 
     def write_raw(self, page_id, data: bytes):
         offset = page_id * PAGE_SIZE
