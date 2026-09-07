@@ -20,7 +20,7 @@ The goal is simple: **understand how a database actually works under the hood** 
 
 <div align="center">
 
-<code>Python → Storage → Pages → Records → Tables → SQL → Query Engine</code>
+<code>Python → Disk Storage → Storage Engine (Pages → Records → Tables) → SQL → Query Engine</code>
 
 </div>
 
