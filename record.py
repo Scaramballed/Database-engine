@@ -36,7 +36,6 @@ class Schema:
 
     def decode(self, data):
         raw_values = struct.unpack(self.fmt, data)    
-
         result = {}
         for col, raw in zip(self.columns, raw_values):
             name, col_type = col[0], col[1]

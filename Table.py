@@ -19,7 +19,9 @@ class Table:
         self.index = None
         self.index_column = index_column
         if index_page_manager is not None:
-            self.index = BTreeIndex(index_page_manager)
+            index_col_type = next(col[1] for col in schema.columns if col[0] == index_column)  
+            key_type = "string" if index_col_type == "str" else "int"                            
+            self.index = BTreeIndex(index_page_manager, key_type=key_type)                      
 
     def _write_metadata(self):
         count = len(self.page_ids)
@@ -60,7 +62,6 @@ class Table:
         raw = page.get_record(slot_id)
         return self.schema.decode(raw)
 
-    # ADDED
     def _update_index(self, values, page_id, slot_id):
         if self.index is None:
             return
@@ -68,7 +69,6 @@ class Table:
         key = values[column_names.index(self.index_column)]
         self.index.insert(key, page_id, slot_id)
 
-    # ADDED
     def get_record_by_index(self, key):
         if self.index is None:
             raise ValueError("This table has no index configured")
@@ -77,43 +77,3 @@ class Table:
             return None
         page_id, slot_id = location
         return self.get_record(page_id, slot_id)
-
-if __name__ == "__main__":
-    import os
-
-    DB_FILE = "test.db"
-    INDEX_FILE = "test_id_index.db"
-    for f in (DB_FILE, INDEX_FILE):
-        if os.path.exists(f):
-            os.remove(f)
-
-    pm = PageManager(DB_FILE)
-    index_pm = PageManager(INDEX_FILE)
-    schema = Schema([("id", "int"), ("name", "str", 20)])
-    table = Table(pm, schema, index_page_manager=index_pm, index_column="id")
-
-    people = [(1, "Scara"), (2, "Siddhartha"), (3, "Bhusal"), (4, "Test"), (5, "Another")]
-
-    for person in people:
-        loc = table.insert_record(person)
-        print(f"Inserted {person} -> {loc}")
-
-    print("\n--- Searching via index ---")
-    for target_id in [1, 3, 5, 999]:
-        result = table.get_record_by_index(target_id)
-        print(f"search id={target_id} -> {result}")
-
-    print("\n--- Closing and reopening both files ---")
-    pm.close()
-    index_pm.close()
-
-    pm2 = PageManager(DB_FILE)
-    index_pm2 = PageManager(INDEX_FILE)
-    table2 = Table(pm2, schema, index_page_manager=index_pm2, index_column="id")
-
-    print(f"Reloaded page_ids: {table2.page_ids}")
-    print(f"Reloaded index root_page_id: {table2.index.root_page_id}")
-
-    for target_id in [2, 4]:
-        result = table2.get_record_by_index(target_id)
-        print(f"after reload, search id={target_id} -> {result}")

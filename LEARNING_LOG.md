@@ -1,16 +1,12 @@
 Day 1~2
 (I didn't really record day 1 cause it was mostly just me researching)
-— Slotted Pages
-
+Slotted Pages
 Today I learned how databases organize records inside fixed-size pages.
-
 I started with a 4096-byte page and learned how the page can be divided into different regions:
-
 Page header
 Slot array
 Free space
 Record data
-
 Implemented a Page class that can:
 Create a 4096-byte page using bytearray
 Store the number of slots in the page header
@@ -42,3 +38,6 @@ I did say I would finish the storage engine yesterday lmao, but yea I did undere
 
 Day 5
 A lot happened today, I spend almost more than 8 hours on trying to implement the B tree algorithm that I learned yesterday into my engine. The toughest part was the wiring later on, especially one line in that update index took me a lot of time to come up with. Over all a very productive day, I even wrote notes with explaination behind every line of code I wrote. I left the debugging to the LLM though. There was a recursion issue in the metadata method which I just couldn't solve it. Either ways a very productive day with being able to sucessfully integrate the B tree indexing into my storage engine and testing was sucessful as well. Honestly very proud how far I am into this already.
+
+Day 6
+A lot happened today as well. I worked on the string indexing today which actually went quite easily compared to me indexing with integer since it was my first time working with B tree algorithm. I also changed the HARDCODED MAXKEYS to just be able to identify the type of the index and continue accordingly. After successfully implementing the string indexing, I worked on caching of the indexes for the quick retrieval with LRU integrated. Further, I spent around 4 hours to understand the tokenizer and the parsar but it was relatively a lot more easier so I could work on my SQL layer. Hence, I did upto SELECT parse after that I will work on INSERT tomorrow. Around 6 hours spent on the project today....

@@ -1,5 +1,6 @@
 import struct
 from collections import OrderedDict
+from btree import BTreeNode, BTreeIndex
 PAGE_SIZE = 4096
 HEADER_FORMAT = "<HH"
 HEADER_SIZE = struct.calcsize(HEADER_FORMAT)
@@ -73,6 +74,7 @@ class PageManager:
             self.file = open(filename, "r+b")
         self.cache = OrderedDict() # caching lesss gooo
         self.pool_size = poolsize
+        self.node_cache = OrderedDict()   #separate cache, since Page and BTreeNode are different content types
     def allocate_page(self):
         self.file.seek(0, 2)
         file_size = self.file.tell()
@@ -121,3 +123,28 @@ class PageManager:
     def _evict_if_needed(self):
         if len(self.cache) > self.pool_size:
             oldest_id, oldest_page = self.cache.popitem(last=False)
+    """this is a separate cache for BTreeNodes, since they are different content types from Pages.
+      This allows us to manage them independently and avoid conflicts in the cache.
+      also so i understand it better lmao"""
+    def read_node(self, page_id, key_type="int"):   
+        if page_id in self.node_cache:
+            self.node_cache.move_to_end(page_id)
+            return self.node_cache[page_id]
+
+        print(f"node cache miss for page {page_id}, reading from disk")
+        raw = self.read_raw(page_id)
+        node = BTreeNode.from_bytes(raw, key_type=key_type) 
+        self.node_cache[page_id] = node
+        self._evict_node_if_needed()
+        return node
+
+    def write_node(self, page_id, node):
+        self.write_raw(page_id, node.to_bytes())
+
+        self.node_cache[page_id] = node
+        self.node_cache.move_to_end(page_id)
+        self._evict_node_if_needed()
+
+    def _evict_node_if_needed(self):
+        if len(self.node_cache) > self.pool_size:
+            self.node_cache.popitem(last=False)
