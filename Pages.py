@@ -1,7 +1,7 @@
 import struct
 from collections import OrderedDict
 from btree import BTreeNode, BTreeIndex
-PAGE_SIZE = 4096
+from constants import PAGE_SIZE
 HEADER_FORMAT = "<HH"
 HEADER_SIZE = struct.calcsize(HEADER_FORMAT)
 SLOT_FORMAT = "<HH"
