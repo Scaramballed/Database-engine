@@ -44,3 +44,6 @@ A lot happened today as well. I worked on the string indexing today which actual
 
 Day 7
 I would say this was the day where everything finally got wired and the final mini working version was finally complete. I was realy happy overall and I used  Streamlit to localhost so I could avoid using CSS and HTML since idk how to yet. First I went through all of my codes once again and fixed a circular import bug that I missed before and started working on the INSERT statement, as I did SELECT statement before, it was a lot more easier, after that I started working on my Query engine which went smoothly as well, since it was just me wiring the parser with the table. After that I made the CLI and wrapped it up with the interface using Streamlit. But since I did not know how it worked, Claude wrote the Streamlit code and yay we are done. From tomorrow I will be cleaning up my code while also making the repository a lot better, its a mess as of now. I worked on the project 6 hours today.
+
+Day 8
+I am taking a bit of break from long hours of just working on a single thing. So for couple of day I will be working on documenting my codes for anyone who is a begineer wants to do the same as me, I hope to be of help to that person. As for today I will be documenting the Class Page, how it is the way it is and how it works.
