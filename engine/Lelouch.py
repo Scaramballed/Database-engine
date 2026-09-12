@@ -1,7 +1,7 @@
 import os
-from Pages import PageManager
-from record import Schema
-from Table import Table
+from engine.Pages import PageManager
+from engine.record import Schema
+from engine.Table import Table
 
 for f in ("lelouch.db", "lelouch_id_index.db"):
     if os.path.exists(f):

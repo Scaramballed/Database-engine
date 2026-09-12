@@ -1,4 +1,4 @@
-from parser import SelectStatement, InsertStatement
+from engine.parser import SelectStatement, InsertStatement
 
 
 class QueryEngine:
@@ -75,11 +75,11 @@ class QueryEngine:
 #for the testing purposes hehe
 if __name__ == "__main__":
     import os
-    from Pages import PageManager
-    from record import Schema
-    from Table import Table
-    from tokenizer import Tokenizer
-    from parser import Parser
+    from engine.Pages import PageManager
+    from engine.record import Schema
+    from engine.Table import Table
+    from engine.tokenizer import Tokenizer
+    from engine.parser import Parser
 
     for f in ("qe_test.db", "qe_test_index.db"):
         if os.path.exists(f):

@@ -1,5 +1,5 @@
 import struct
-from constants import PAGE_SIZE
+from engine.constants import PAGE_SIZE
 INDEX_META_PAGE_ID = 0
 
 KEY_TYPE_INT = "int"

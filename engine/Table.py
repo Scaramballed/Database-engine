@@ -1,7 +1,7 @@
 import struct
-from Pages import Page, PageManager, PAGE_SIZE, SLOT_SIZE
-from record import Schema
-from btree import BTreeIndex  
+from engine.Pages import Page, PageManager, PAGE_SIZE, SLOT_SIZE
+from engine.record import Schema
+from engine.btree import BTreeIndex  
 
 META_PAGE_ID = 0
 

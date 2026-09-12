@@ -1,10 +1,10 @@
 import streamlit as st
-from tokenizer import Tokenizer
-from parser import Parser
-from queryengine import QueryEngine
-from Pages import PageManager
-from record import Schema
-from Table import Table
+from engine.tokenizer import Tokenizer
+from engine.parser import Parser
+from engine.queryengine import QueryEngine
+from engine.Pages import PageManager
+from engine.record import Schema
+from engine.Table import Table
 
 st.set_page_config(
     page_title="SCARA SQL Engine",

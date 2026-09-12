@@ -1,4 +1,4 @@
-from tokenizer import Token, Tokenizer
+from engine.tokenizer import Token, Tokenizer
 
 
 class SelectStatement:

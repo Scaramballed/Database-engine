@@ -235,7 +235,7 @@ def _evict_if_needed(self):
 
 Nothing fancy happening here. But as you can see in the evition, it makes sure that if the cache exceeds the pool size, it is evicted. This happens from the .popitem (last = False). Aso makes sure exactly that entry is removed.
 
-```python 
+```python
 def read_node(self, page_id, key_type="int"):   
     if page_id in self.node_cache:
         self.node_cache.move_to_end(page_id)

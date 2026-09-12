@@ -1,6 +1,6 @@
-from tokenizer import Tokenizer
-from parser import Parser
-from queryengine import QueryEngine
+from engine.tokenizer import Tokenizer
+from engine.parser import Parser
+from engine.queryengine import QueryEngine
 
 
 def run_cli(engine):
@@ -22,9 +22,9 @@ def run_cli(engine):
 
 
 if __name__ == "__main__":
-    from Pages import PageManager
-    from record import Schema
-    from Table import Table
+    from engine.Pages import PageManager
+    from engine.record import Schema
+    from engine.Table import Table
 
     pm = PageManager("lelouch.db")
     index_pm = PageManager("lelouch_id_index.db")
