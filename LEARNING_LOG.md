@@ -47,3 +47,6 @@ I would say this was the day where everything finally got wired and the final mi
 
 Day 8
 I am taking a bit of break from long hours of just working on a single thing. So for couple of day I will be working on documenting my codes for anyone who is a begineer wants to do the same as me, I hope to be of help to that person. As for today I will be documenting the Class Page, how it is the way it is and how it works.
+
+Day 9
+Today I onyl worked for like 3 hours, but all the time was invested into documenting the project in general. I will be contiuing to do that for several days.
