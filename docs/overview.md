@@ -44,6 +44,4 @@ What concept is it implementing?
         ↓
 Why did I choose this approach?
         ↓
-What would happen without it?
-        ↓
 Yea, I would try my best to answer those questions.
