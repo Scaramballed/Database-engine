@@ -69,7 +69,6 @@ class Tokenizer:
 
         return tokens
 
-
 if __name__ == "__main__":
     queries = [
         "SELECT id, name FROM users WHERE id = 5",
