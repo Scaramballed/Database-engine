@@ -116,7 +116,6 @@ class BTreeIndex:
 
         if self.page_manager.is_new():
             self.root_page_id = 0
-            self._write_index_metadata()
             root = BTreeNode(key_type=self.key_type, is_leaf=True)
             self.root_page_id = self._allocate_node(root)
             self._write_index_metadata()
